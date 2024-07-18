@@ -26,7 +26,9 @@ func main() {
 		panic(err)
 	}
 
-	combinations := calculateCombination(&mi, targetBytes)
+	excludedKeys := strings.Split(*excludedKeysStr, ",")
+	includedKeys := strings.Split(*includedKeysStr, ",")
+	combinations := calculateCombination(&mi, targetBytes, excludedKeys, includedKeys)
 
 	slices.SortFunc(combinations, func(c1, c2 Combination) int {
 		return int(c1.diff - c2.diff)
@@ -39,10 +41,8 @@ func main() {
 	}
 }
 
-func calculateCombination(mi *MemInfo, targetBytes int64) []Combination {
+func calculateCombination(mi *MemInfo, targetBytes int64, excludedKeys, includedKeys []string) []Combination {
 	keys := make([]string, 0, len(mi.values))
-	excludedKeys := strings.Split(*excludedKeysStr, ",")
-	includedKeys := strings.Split(*includedKeysStr, ",")
 
 	for k, v := range mi.values {
 		if !slices.Contains(excludedKeys, k) && !slices.Contains(includedKeys, k) && v > 0 {

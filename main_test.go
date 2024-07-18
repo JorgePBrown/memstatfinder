@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"slices"
 	"testing"
 )
@@ -17,14 +16,11 @@ func TestMain(t *testing.T) {
 		},
 	}
 
-	combinations := calculateCombination(&mi, 90)
+	combinations := calculateCombination(&mi, 90, []string{}, []string{})
 
 	slices.SortFunc(combinations, func(c1, c2 Combination) int {
 		return int(c1.diff - c2.diff)
 	})
-
-	fmt.Printf("%v\n", combinations)
-	//fmt.Printf("%v\n", combinations[0])
 
 	if combinations[0].diff != 0 {
 		t.Errorf("expected diff to be %d", 0)
